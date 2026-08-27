@@ -21,6 +21,11 @@ async-trait = "0.1"
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }
+# rusqlite 0.30 uses libsqlite3-sys ^0.27 — the same major version required by
+# sqlx 0.7 (packages/core), satisfying Cargo's single-links-value constraint.
+# The "bundled" feature compiles sqlite3 from source, making the benchmark
+# hermetic and reproducible in CI without a system sqlite3 installation.
+rusqlite = { version = "0.30", features = ["bundled"] }
 tempfile = "3"
 tokio-test = "0.4"
 tracing = "0.1"
@@ -61,4 +66,8 @@ harness = false
 
 [[bench]]
 name = "protocol_bench"
+harness = false
+
+[[bench]]
+name = "storage_bench"
 harness = false
